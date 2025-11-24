@@ -3,63 +3,47 @@ kaboom({
     width: 800,
     height: 600,
     scale: 2,
-    clearColor: [0, 0, 0, 1], // black background (darkness)
+    clearColor: [0, 0, 0, 1], // black background
     debug: true,
 });
 
-// Load assets (placeholder colors for now)
-loadSprite("kael", "https://i.imgur.com/qxH1fLk.png"); // example placeholder
-loadSprite("lux", "https://i.imgur.com/3V3RQJx.png");  // example placeholder
-
-// Add player (Kael)
+// Player (Kael) as a blue rectangle
 const kael = add([
-    sprite("kael"),
+    rect(32, 48),
     pos(100, 300),
+    color(0, 0, 1),      // blue
     area(),
     body(),
 ]);
 
-// Add companion (Lux)
+// Companion (Lux) as a yellow rectangle
 const lux = add([
-    sprite("lux"),
+    rect(24, 24),
     pos(150, 250),
-    area(),
-    { offset: vec2(0, 0) }
+    color(1, 1, 0),      // yellow
+    area()
 ]);
 
-// Lux follows Kael
+// Lux follows Kael smoothly
 action(lux, () => {
-    const speed = 3;
     lux.pos = lux.pos.lerp(kael.pos.add(vec2(50, -50)), 0.05);
 });
 
 // Player movement
-keyDown("left", () => {
-    kael.move(-120, 0);
-});
-keyDown("right", () => {
-    kael.move(120, 0);
-});
-keyDown("up", () => {
-    kael.move(0, -120);
-});
-keyDown("down", () => {
-    kael.move(0, 120);
-});
+keyDown("left", () => kael.move(-120, 0));
+keyDown("right", () => kael.move(120, 0));
+keyDown("up", () => kael.move(0, -120));
+keyDown("down", () => kael.move(0, 120));
 
-// Add light radius (basic)
+// Light radius around Lux using a semi-transparent circle
 const light = add([
+    circle(80),                // radius
     pos(lux.pos),
-    circle(80),              // radius of light
-    color(1, 1, 0, 0.3),     // yellowish light, semi-transparent
-    follow(lux)              // follow the Lux orb
+    color(1, 1, 0, 0.3),       // semi-transparent yellow
+    area(),
 ]);
 
-// Helper function: make 'follow' component
-function follow(target) {
-    return {
-        update() {
-            this.pos = target.pos;
-        }
-    }
-}
+// Make the light follow Lux
+action(light, () => {
+    light.pos = lux.pos;
+});
