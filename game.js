@@ -11,7 +11,7 @@ kaboom({
 const kael = add([
     rect(32, 48),
     pos(100, 300),
-    color(0, 0, 1),      // blue
+    color(0, 0, 1), // blue
     area(),
     body(),
 ]);
@@ -20,7 +20,7 @@ const kael = add([
 const lux = add([
     rect(24, 24),
     pos(150, 250),
-    color(1, 1, 0),      // yellow
+    color(1, 1, 0), // yellow
     area()
 ]);
 
@@ -35,15 +35,14 @@ keyDown("right", () => kael.move(120, 0));
 keyDown("up", () => kael.move(0, -120));
 keyDown("down", () => kael.move(0, 120));
 
-// Light radius around Lux using a semi-transparent circle
+// Circular light around Lux
 const light = add([
-    circle(80),                // radius
+    circle(80),             // radius
     pos(lux.pos),
-    color(1, 1, 0, 0.3),       // semi-transparent yellow
-    area(),
+    color(1, 1, 0, 0.3),    // semi-transparent yellow
 ]);
 
-// Make the light follow Lux
+// Make light follow Lux
 action(light, () => {
     light.pos = lux.pos;
 });
